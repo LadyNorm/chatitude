@@ -7,8 +7,8 @@
 </head>
 <body>
 
-<div class="bubble" class="signin">
-    <input id="username" type="text" value="CuriousJorge">
+<div class="bubble" class="users">
+    <input id="username" type="text" value="username">
     <input id="password" type="text" value="password">
     <button class="login">Login!</button>
     <button class="signup">Sign Up!</button>
@@ -37,7 +37,7 @@
 </script>
 
 <script>
-$(document).on("click", "button.login", function(){
+$(document).on("click", ".login", function(){
 	var username = $('#username').val()
   var password = $('#password').val()
   console.log(username, password)
@@ -49,6 +49,17 @@ $(document).on("click", "button.login", function(){
   	apiToken = data.apiToken
   	console.log(apiToken)
   })
+})
+$(document).on("click", ".signup", function() {
+	var username = $('#username').val()
+  var password = $('#password').val()
+	$.ajax({
+		url: 'http://chat.api.mks.io/signup',
+		type: 'POST',
+		data: {username: username, password: password}	
+		}).success(function(data) {
+			console.log(data)
+		})
 })
 $(document).on("click", ".send-button", function(e){
 e.preventDefault()
