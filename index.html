@@ -49,19 +49,18 @@
 </script>
 
 <script>
-     $(document).on("click", "button.login", function(){
-      var username = $('#username').val()
-      var password = $('#password').val()
-      console.log(username, password)
-      $.ajax({
-    type: 'POST',
-    data: {username: username, password: password},
-    url: 'http://chat.api.mks.io/signin'
-  }).success(function (data) {
-    localStorage.setItem("apiToken", data.apiToken);
-    alert(localStorage.apiToken)
-    $('#signin').remove();
-  })
+$(document).on("click", "button.login", function(){
+	var username = $('#username').val()
+	var password = $('#password').val()
+	console.log(username, password)
+	$.ajax({
+		type: 'POST',
+		data: {username: username, password: password},
+		url: 'http://chat.api.mks.io/signin'
+		}).success(function (data) {
+			localStorage.setItem("apiToken", data.apiToken);
+	$('#signin').remove();
+	})
 })
 
 $(document).on("click", ".signup", function() {
@@ -86,7 +85,7 @@ e.preventDefault()
 			message: $('textarea[name=message]').val()
 		}	
 		}).done(function(data) {
-			console.log(data)
+			console.log(data);
 	})
 })
 </script>
@@ -96,30 +95,58 @@ e.preventDefault()
 	$.ajax({
 	  type: 'GET',
 	  url: 'http://chat.api.mks.io/chats'
-	}).success(function (chats) {
-	  console.log("Got chats:", chats)
+		}).success(function (chats) {
+		  console.log("Got chats:", chats)
 	})
 </script>
 
 
 <script>
-      var source = $("#chat-template").html();
-      var template = Handlebars.compile(source);
-      $.ajax({
-  type: 'GET',
-  url: 'http://chat.api.mks.io/chats'
-}).success(function (chats) {
-  chats.forEach(function(chat){
-    var myNewHTML = template({
-        user: chat['user'],
-        message: chat['message'],
-        time: chat['time']
-      });
-        $('.chats').prepend(myNewHTML);
-  })
+var source = $("#chat-template").html();
+var template = Handlebars.compile(source);
+$.ajax({
+	type: 'GET',
+	url: 'http://chat.api.mks.io/chats'
+	}).success(function (chats) {
+		chats.forEach(function(chat){
+			var myNewHTML = template({
+				user: chat['user'],
+				message: chat['message'],
+				time: chat['time']
+			});
+		$('.chats').prepend(myNewHTML);
+	})
 })
       var anotherHTML = template({
         title: "New Title",
         content: "New Content"
       });
-  </script>
+</script>
+
+<script>
+window.setInterval(function(){
+  ajaxCallFunction();  //calling every 5 seconds
+}, 5000);
+
+function ajaxCallFunction(){
+  var source = $("#chat-template").html();
+  var template = Handlebars.compile(source);
+  $.ajax({
+		type: 'GET',
+		url: 'http://chat.api.mks.io/chats'
+	}).success(function (chats) {
+	chats.forEach(function(chat){
+	 	var myNewHTML = template({
+      user: chat['user'],
+      message: chat['message'],
+      time: chat['time']
+    });
+    $('.chats').prepend(myNewHTML);
+  })
+})
+  var anotherHTML = template({
+    title: "New Title",
+    content: "New Content"
+  });
+}
+</script>
