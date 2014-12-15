@@ -6,31 +6,24 @@
   <link rel="stylesheet" type="text/css" href="./public/css/chats.css">
 </head>
 <body>
-
-<div class="bubble" class="signin">
-    <input id="username" type="text" value="CuriousJorge">
-    <input id="password" type="text" value="password">
-    <button class="login">Login!</button>
+<div class="container">
+  <div id="signin" class="bubble" class="signin">
+      <input id="username" type="text" value="CuriousJorge">
+      <input id="password" type="text" value="password">
+      <button class="login">Login!</button>
+  </div>
 </div>
 
-
-<script>
-	$.ajax({
-		type: 'POST',
-		url: 'http://chat.api.mks.io/signin'
-	}).success(function (chats) {
-		console.log("Got chats:", chats)
-	})
-</script>
-
-<script>
-     $(document).on("click", "button.login", function(){
-      alert("suckka!")
-  })
-
-</script>
-
 <div class="chats"></div>
+<button class="checkit"> Whoa </button>
+</body>
+
+<script>
+     $(document).on("click", "button.checkit", function(){
+        console.log("whoa")
+        console.log(localStorage.apiToken);
+     })
+</script>
 
 <script id="chat-template" type="text/x-handlebars-template">
 	<div class="bubble" class="chat">
@@ -48,7 +41,9 @@
     type: 'POST',
     data: {username: username, password: password},
     url: 'http://chat.api.mks.io/signin'
-  }).success(function () {
+  }).success(function (data) {
+    localStorage.setItem("apiToken", data.apiToken);
+    $('#signin').remove();
   })
   })
 
@@ -64,7 +59,7 @@
 	})
 </script>
 
-</body>
+
 <script>
       var source = $("#chat-template").html();
       var template = Handlebars.compile(source);
