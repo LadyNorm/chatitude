@@ -59,6 +59,7 @@
     url: 'http://chat.api.mks.io/signin'
   }).success(function (data) {
     localStorage.setItem("apiToken", data.apiToken);
+    alert(localStorage.apiToken)
     $('#signin').remove();
   })
 })
@@ -81,7 +82,7 @@ e.preventDefault()
 		type: 'POST',
 		dataType: 'text',
 		data: {
-			apiToken: apiToken,
+			apiToken: localStorage.apiToken,
 			message: $('textarea[name=message]').val()
 		}	
 		}).done(function(data) {
@@ -114,7 +115,7 @@ e.preventDefault()
         message: chat['message'],
         time: chat['time']
       });
-        $('body').append(myNewHTML);
+        $('.chats').prepend(myNewHTML);
   })
 })
       var anotherHTML = template({
