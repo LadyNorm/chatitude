@@ -6,7 +6,11 @@
   <link rel="stylesheet" type="text/css" href="./public/css/chats.css">
 </head>
 <body>
-
+<div class="bubble" class="signin">
+    <input name="username" placeholder="username">
+    <input name="password" placeholder="password">
+    <button class="login">Login!</button>
+</div>
 <div class="chats"></div>
 
 <script id="chat-template" type="text/x-handlebars-template">
@@ -15,6 +19,14 @@
 		<p>{{ message }}</p>
 	</div>
 </script>
+
+<script>
+     $(document).on("click", "button.login", function(){
+      alert("suckka!")
+  })
+
+</script>
+
 
 <script>
 	$.ajax({
