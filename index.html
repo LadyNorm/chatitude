@@ -114,7 +114,7 @@ e.preventDefault()
         message: chat['message'],
         time: chat['time']
       });
-        $('body').append(myNewHTML);
+        $('.chats').prepend(myNewHTML);
   })
 })
       var anotherHTML = template({
