@@ -81,11 +81,11 @@ e.preventDefault()
 		type: 'POST',
 		dataType: 'text',
 		data: {
-			apiToken: apiToken,
+			apiToken: localStorage.apiToken,
 			message: $('textarea[name=message]').val()
 		}	
 		}).done(function(data) {
-			console.log(data)
+			console.log(data);
 	})
 })
 </script>
