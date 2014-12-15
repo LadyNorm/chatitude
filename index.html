@@ -62,7 +62,6 @@ $(document).on("click", "button.login", function(){
 	$('#signin').remove();
 	})
 })
-
 $(document).on("click", ".signup", function() {
 	var username = $('#username').val()
   var password = $('#password').val()
@@ -84,20 +83,10 @@ e.preventDefault()
 			apiToken: localStorage.apiToken,
 			message: $('textarea[name=message]').val()
 		}	
-		}).done(function(data) {
+		}).success(function(data) {
 			console.log(data);
 	})
 })
-</script>
-
-
-<script>
-	$.ajax({
-	  type: 'GET',
-	  url: 'http://chat.api.mks.io/chats'
-		}).success(function (chats) {
-		  console.log("Got chats:", chats)
-	})
 </script>
 
 
@@ -108,6 +97,7 @@ $.ajax({
 	type: 'GET',
 	url: 'http://chat.api.mks.io/chats'
 	}).success(function (chats) {
+		console.log(chats)
 		chats.forEach(function(chat){
 			var myNewHTML = template({
 				user: chat['user'],
@@ -126,9 +116,10 @@ $.ajax({
 <script>
 window.setInterval(function(){
   ajaxCallFunction();  //calling every 5 seconds
-}, 5000);
+	}, 5000);
 
 function ajaxCallFunction(){
+	$('.chats').empty();
   var source = $("#chat-template").html();
   var template = Handlebars.compile(source);
   $.ajax({
