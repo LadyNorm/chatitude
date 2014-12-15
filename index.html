@@ -7,6 +7,15 @@
 </head>
 <body>
 
+<script>
+	$.ajax({
+		type: 'POST',
+		url: 'http://chat.api.mks.io/signin'
+	}).success(function (chats) {
+		console.log("Got chats:", chats)
+	})
+</script>
+
 <div class="chats"></div>
 
 <script id="chat-template" type="text/x-handlebars-template">
@@ -23,8 +32,8 @@
 	}).success(function (chats) {
 	  console.log("Got chats:", chats)
 	})
-
 </script>
+
 </body>
 <script>
       var source = $("#chat-template").html();
