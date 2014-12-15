@@ -42,7 +42,7 @@
 
 
 <script id="chat-template" type="text/x-handlebars-template">
-	<div class="bubble" class="chat">
+	<div class="bubble" id="{{ id }}" class="chat">
 		<h4>{{ user }}</h4>
 		<p>{{ message }}</p>
 	</div>
@@ -135,18 +135,22 @@ function ajaxCallFunction(){
 		type: 'GET',
 		url: 'http://chat.api.mks.io/chats'
 	}).success(function (chats) {
-	chats.forEach(function(chat){
+	 chats.forEach(function(chat){
 	 	var myNewHTML = template({
       user: chat['user'],
       message: chat['message'],
-      time: chat['time']
+      time: chat['time'],
+      id: chat['id']
     });
-    $('.chats').prepend(myNewHTML);
+    if ($('.#' + chat.id).length == 0){
+       $('.chats').prepend(myNewHTML);
+     }
   })
 })
   var anotherHTML = template({
     title: "New Title",
     content: "New Content"
   });
+console.log("Rawr")
 }
 </script>
