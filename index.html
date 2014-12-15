@@ -8,19 +8,10 @@
 <body>
 
 <div class="bubble" class="signin">
-    <input name="username" placeholder="username">
-    <input name="password" placeholder="password">
+    <input id="username" type="text" value="CuriousJorge">
+    <input id="password" type="text" value="password">
     <button class="login">Login!</button>
 </div>
-
-<script>
-	$.ajax({
-		type: 'POST',
-		url: 'http://chat.api.mks.io/signin'
-	}).success(function (chats) {
-		console.log("Got chats:", chats)
-	})
-</script>
 
 <div class="chats"></div>
 
@@ -33,7 +24,15 @@
 
 <script>
      $(document).on("click", "button.login", function(){
-      alert("suckka!")
+      var username = $('#username').val()
+      var password = $('#password').val()
+      console.log(username, password)
+      $.ajax({
+    type: 'POST',
+    data: {username: username, password: password},
+    url: 'http://chat.api.mks.io/signin'
+  }).success(function () {
+  })
   })
 
 </script>
