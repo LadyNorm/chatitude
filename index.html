@@ -25,7 +25,6 @@
 			<input type='submit' value='Send Message' class='send-button'>
 		</form>
 	</div>
-<div class="chats"></div>
 </body>
 
 <div class="chats"></div>
@@ -62,6 +61,7 @@ $(document).on("click", "button.login", function(){
 	$('#signin').remove();
 	})
 })
+
 $(document).on("click", ".signup", function() {
 	var username = $('#username').val()
   var password = $('#password').val()
@@ -83,10 +83,20 @@ e.preventDefault()
 			apiToken: localStorage.apiToken,
 			message: $('textarea[name=message]').val()
 		}	
-		}).success(function(data) {
+		}).done(function(data) {
 			console.log(data);
 	})
 })
+</script>
+
+
+<script>
+	$.ajax({
+	  type: 'GET',
+	  url: 'http://chat.api.mks.io/chats'
+		}).success(function (chats) {
+		  console.log("Got chats:", chats)
+	})
 </script>
 
 
@@ -97,7 +107,6 @@ $.ajax({
 	type: 'GET',
 	url: 'http://chat.api.mks.io/chats'
 	}).success(function (chats) {
-		console.log(chats)
 		chats.forEach(function(chat){
 			var myNewHTML = template({
 				user: chat['user'],
@@ -116,16 +125,16 @@ $.ajax({
 <script>
 window.setInterval(function(){
   ajaxCallFunction();  //calling every 5 seconds
-	}, 5000);
+}, 5000);
 
 function ajaxCallFunction(){
-	$('.chats').empty();
   var source = $("#chat-template").html();
   var template = Handlebars.compile(source);
   $.ajax({
 		type: 'GET',
 		url: 'http://chat.api.mks.io/chats'
 	}).success(function (chats) {
+    $('.chats').empty();
 	 chats.forEach(function(chat){
 	 	var myNewHTML = template({
       user: chat['user'],
@@ -133,7 +142,7 @@ function ajaxCallFunction(){
       time: chat['time'],
       id: chat['id']
     });
-    if ($('.#' + chat.id).length == 0){
+    if ($('.chat#' + chat.id).length == 0){
        $('.chats').prepend(myNewHTML);
      }
   })
