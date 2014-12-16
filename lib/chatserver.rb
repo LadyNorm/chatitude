@@ -3,6 +3,18 @@ require 'securerandom'
 
 module Chat
   class DB
+
+    def self.connect_db
+      PG.connect(host: 'localhost', dbname: 'chatitude')
+    end
+
+    def self.clear_db(db)
+      db.exec <<-SQL
+        DELETE FROM users;
+        DELETE FROM api_tokens;
+      SQL
+    end
+
     def self.create_tables
       db.exec <<-SQL
         CREATE TABLE IF NOT EXISTS users(
@@ -18,8 +30,11 @@ module Chat
       SQL
     end
 
-    def self.connect_db
-      PG.connect(host: 'localhost', dbname: 'chatitude')
+    def self.drop_tables
+      db.exec <<-SQL
+        DROP TABLE users CASCADE;
+        DROP TABLE api_tokens CASCADE;
+      SQL
     end
 
     def self.new_user(name, pword, db)
@@ -33,7 +48,6 @@ module Chat
     def self.find_user_byname(username, db)
       db.exec("SELECT * FROM users where username = $1", [username]).to_a.first
     end
-
 
     def self.generate_apitoken
       SecureRandom.hex
