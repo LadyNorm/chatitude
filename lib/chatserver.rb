@@ -49,7 +49,7 @@ module Chat
         INSERT INTO users (username, password)
         values ($1, $2) returning *
         SQL
-      db.exec(sql, [name, pword]).to_a.first    
+      db.exec(sql, [name, pword]).to_a.first   
     end
 
     def self.find_user_byname(username, db)
@@ -89,6 +89,13 @@ module Chat
         SELECT * FROM chats
       SQL
       db.exec(sql)
+    end
+
+    def self.save_api_key(api_token, user_id, db)
+      sql = <<-SQL
+        UPDATE api_tokens SET api_token = $1 WHERE user_id = $2
+      SQL
+      db.exec(sql, [api_token, user_id])
     end
 
   end
