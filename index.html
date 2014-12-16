@@ -33,10 +33,10 @@
 
 
 <script>
-     $(document).on("click", "button.checkit", function(){
-        console.log("whoa")
-        console.log(localStorage.apiToken);
-     })
+ $(document).on("click", "button.checkit", function(){
+    console.log("whoa")
+    console.log(localStorage.apiToken);
+ })
 </script>
 
 
@@ -49,45 +49,46 @@
 </script>
 
 <script>
-$(document).on("click", "button.login", function(){
-	var username = $('#username').val()
-	var password = $('#password').val()
-	console.log(username, password)
-	$.ajax({
-		type: 'POST',
-		data: {username: username, password: password},
-		url: 'http://chat.api.mks.io/signin'
-		}).success(function (data) {
-			localStorage.setItem("apiToken", data.apiToken);
-	$('#signin').remove();
-	})
-})
+  $(document).on("click", "button.login", function(){
+  	var username = $('#username').val()
+  	var password = $('#password').val()
+  	console.log(username, password)
+  	$.ajax({
+  		type: 'POST',
+  		data: {username: username, password: password},
+  		url: 'http://chat.api.mks.io/signin'
+  		}).success(function (data) {
+  			localStorage.setItem("apiToken", data.apiToken);
+  	$('#signin').remove();
+    $('.container').append('<h3>You are logged in as '+username+'</h3>')
+  	})
+  })
 
-$(document).on("click", ".signup", function() {
-	var username = $('#username').val()
-  var password = $('#password').val()
-	$.ajax({
-		url: 'http://chat.api.mks.io/signup',
-		type: 'POST',
-		data: {username: username, password: password}	
-		}).success(function(data) {
-			console.log(data)
-		})
-})
+  $(document).on("click", ".signup", function() {
+  	var username = $('#username').val()
+    var password = $('#password').val()
+  	$.ajax({
+  		url: 'http://chat.api.mks.io/signup',
+  		type: 'POST',
+  		data: {username: username, password: password}	
+  		}).success(function(data) {
+  			console.log(data)
+  		})
+  })
 $(document).on("click", ".send-button", function(e){
-e.preventDefault()
-	$.ajax({
-		url: 'http://chat.api.mks.io/chats',
-		type: 'POST',
-		dataType: 'text',
-		data: {
-			apiToken: localStorage.apiToken,
-			message: $('textarea[name=message]').val()
-		}	
-		}).done(function(data) {
-      fetchChatMessages();
-			console.log(data);
-	})
+  e.preventDefault()
+  	$.ajax({
+  		url: 'http://chat.api.mks.io/chats',
+  		type: 'POST',
+  		dataType: 'text',
+  		data: {
+  			apiToken: localStorage.apiToken,
+  			message: $('textarea[name=message]').val()
+  		}	
+  		}).done(function(data) {
+        fetchChatMessages();
+  			console.log(data);
+  	})
 })
 </script>
 
@@ -102,35 +103,41 @@ e.preventDefault()
 </script>
 
 <script>
-window.setInterval(function(){
-  fetchChatMessages();  //calling every 5 seconds
-}, 1000);
+  $( document ).ready(function() {
+    fetchChatMessages();
+    console.log( "ready!" );
+  });
 
-function fetchChatMessages(){
+  window.setInterval(function(){
+    fetchChatMessages();  //calling every 5 seconds
+  }, 1000);
+
   var source = $("#chat-template").html();
   var template = Handlebars.compile(source);
-  $.ajax({
-		type: 'GET',
-		url: 'http://chat.api.mks.io/chats'
-	}).success(function (chats) {
-    $('.chats').empty();
-	 chats.forEach(function(chat){
-	 	var myNewHTML = template({
-      user: chat['user'],
-      message: chat['message'],
-      time: new Date( chat['time'] *1000),
-      id: chat['id']
-    });
-    // if ($('.chat#' + chat.id).length == 0){
 
-       $('.chats').prepend(myNewHTML);
-     // }
+  function fetchChatMessages(){
+    $.ajax({
+  		type: 'GET',
+  		url: 'http://chat.api.mks.io/chats'
+  	}).success(function (chats) {
+      $('.chats').empty();
+  	 chats.forEach(function(chat){
+  	 	var myNewHTML = template({
+        user: chat['user'],
+        message: chat['message'],
+        time: new Date( chat['time'] *1000),
+        id: chat['id']
+      });
+      // if ($('.chat#' + chat.id).length == 0){
+
+         $('.chats').prepend(myNewHTML);
+       // }
+      })
   })
-})
   var anotherHTML = template({
     title: "New Title",
     content: "New Content"
   });
-console.log("Rawr")
-}
+  console.log("Rawr")
+  }
 </script>
