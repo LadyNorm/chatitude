@@ -36,7 +36,7 @@ module Chat
        SQL
     end
 
-    def self.drop_tables
+    def self.drop_tables(db)
       db.exec <<-SQL
         DROP TABLE users CASCADE;
         DROP TABLE api_tokens CASCADE;
@@ -49,13 +49,14 @@ module Chat
         INSERT INTO users (username, password)
         values ($1, $2) returning *
         SQL
-      db.exec(sql, [name, pword]).to_a.first    
+      db.exec(sql, [name, pword]).to_a.first   
     end
 
     def self.find_user_byname(username, db)
-      db.exec <<-SQL
-        SELECT * FROM users where username = $1, [username]).to_a.first
+      sql = <<-SQL
+        SELECT * FROM users where username = $1
       SQL
+      db.exec(sql, username).to_a.first
     end
 
     def self.generate_apitoken
@@ -63,21 +64,24 @@ module Chat
     end
 
     def self.find_user_byapi(api_token, db)
-      db.exec <<-SQL
-        SELECT username FROM users JOIN api_tokens ON users.id = api_tokens.user_id WHERE user_id = $1, [users.username]).to_a.first
+      sql = <<-SQL
+        SELECT username FROM users JOIN api_tokens ON users.id = api_tokens.user_id WHERE user_id = $1
       SQL
+      db.exec(sql, [users.username]).to_a.first
     end
 
     def self.find_api_key(user_id, db)
-      db.exec <<-SQL
-        SELECT api_token FROM api_tokens WHERE user_id = $1, [user_id]).entries.first
+      sql = <<-SQL
+        SELECT api_token FROM api_tokens WHERE user_id = $1
       SQL
+      db.exec(sql, user_id).entries.first)
     end
 
     def self.new_message(message, api_token, db)
-      db.exec <<-SQL
+      sql = <<-SQL
         INSERT INTO chats ()
       SQL
+      db.exec(sql)
     end
 
     def self.all_chats(db)
@@ -85,6 +89,20 @@ module Chat
         SELECT * FROM chats
       SQL
       db.exec(sql)
+    end
+
+    def self.save_api_key(api_token, user_id, db)
+      sql = <<-SQL
+        INSERT INTO api_tokens (api_token, user_id) VALUES ($1, $2)
+      SQL
+      db.exec(sql, [api_token, user_id])
+    end
+
+    def self.update_api_key(api_token, user_id, db)
+      sql = <<-SQL
+        UPDATE api_tokens SET api_token = $1 WHERE user_id = $2
+      SQL
+      db.exec(sql, [api_token, user_id])
     end
 
   end
