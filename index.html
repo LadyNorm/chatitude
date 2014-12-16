@@ -44,6 +44,7 @@
 	<div class="bubble" id="{{ id }}" class="chat">
 		<h4>{{ user }}</h4>
 		<p>{{ message }}</p>
+		<small>{{ time }}</small>
 	</div>
 </script>
 
@@ -111,7 +112,7 @@ $.ajax({
 			var myNewHTML = template({
 				user: chat['user'],
 				message: chat['message'],
-				time: chat['time']
+				time: new Date( chat['time'] *1000)
 			});
 		$('.chats').prepend(myNewHTML);
 	})
@@ -139,12 +140,13 @@ function ajaxCallFunction(){
 	 	var myNewHTML = template({
       user: chat['user'],
       message: chat['message'],
-      time: chat['time'],
+      time: new Date( chat['time'] *1000),
       id: chat['id']
     });
-    if ($('.chat#' + chat.id).length == 0){
+    // if ($('.chat#' + chat.id).length == 0){
+
        $('.chats').prepend(myNewHTML);
-     }
+     // }
   })
 })
   var anotherHTML = template({
