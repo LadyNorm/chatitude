@@ -4,7 +4,7 @@ require 'securerandom'
 module Chat
   class DB
 
-    def self.connect_db
+    def self.create_db_connection
       PG.connect(host: 'localhost', dbname: 'chatitude')
     end
 
