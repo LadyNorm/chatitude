@@ -77,17 +77,17 @@
 
   $(document).on("click", ".send-button", function(e){
     e.preventDefault()
-  	$.ajax({
-  		url: 'http://chat.api.mks.io/chats',
-  		type: 'POST',
-  		dataType: 'text',
-  		data: {
-  			apiToken: localStorage.apiToken,
-  			message: $('textarea[name=message]').val()
-  		}	
-  		}).done(function(data) {
+    $.ajax({
+      url: 'http://chat.api.mks.io/chats',
+      type: 'POST',
+      dataType: 'text',
+      data: {
+        apiToken: localStorage.apiToken,
+        message: $('textarea[name=message]').val()
+      } 
+      }).done(function(data) {
         fetchChatMessages();
-  			console.log(data);
+        console.log(data);
   })
 })
 </script>
