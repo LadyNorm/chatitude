@@ -10,10 +10,10 @@ module Chat
           username VARCHAR,
           password VARCHAR
           ); 
-        CREATE TABLE IF NOT EXISTS api_keys(
+        CREATE TABLE IF NOT EXISTS api_tokens(
         id        SERIAL PRIMARY KEY,
         user_id   INTEGER REFERENCES users(id),
-        api_key   VARCHAR
+        api_token   VARCHAR
         ); 
       SQL
     end
@@ -35,7 +35,7 @@ module Chat
     end
 
 
-    def self.generate_apikey
+    def self.generate_apitoken
       SecureRandom.hex
     end
 
