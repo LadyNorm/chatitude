@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-	<title>JQEEEEEEEERY</title>
+  <title>JQEEEEEEEERY</title>
   <script src="jquery-2.1.1.js"></script>
   <script src="handlebars-v2.0.0.js"></script>
   <link rel="stylesheet" type="text/css" href="./public/css/chats.css">
@@ -16,15 +16,15 @@
   </div>
 </div>
 <br>
-	<br>
-	<div class="bubble send-message">
-		<form>
-			<label>Message:</label>
-			<textarea name='message'></textarea>
-			<br>
-			<input type='submit' value='Send Message' class='send-button'>
-		</form>
-	</div>
+  <br>
+  <div class="bubble send-message">
+    <form>
+      <label>Message:</label>
+      <textarea name='message'></textarea>
+      <br>
+      <input type='submit' value='Send Message' class='send-button'>
+    </form>
+  </div>
 </body>
 
 <div class="chats"></div>
@@ -41,66 +41,66 @@
 
 
 <script id="chat-template" type="text/x-handlebars-template">
-	<div class="bubble chat" id="{{ id }}">
-		<h4>{{ user }}</h4>
-		<p>{{ message }}</p>
-		<small>{{ time }}</small>
-	</div>
+  <div class="bubble chat" id="{{ id }}">
+    <h4>{{ user }}</h4>
+    <p>{{ message }}</p>
+    <small>{{ time }}</small>
+  </div>
 </script>
 
 <script>
 
   $(document).on("click", "button.login", function(){
-  	var username = $('#username').val()
-  	var password = $('#password').val()
-  	console.log(username, password)
-  	$.ajax({
-  		type: 'POST',
-  		data: {username: username, password: password},
-  		url: 'http://chat.api.mks.io/signin'
-  		}).success(function (data) {
-  			localStorage.setItem("apiToken", data.apiToken);
-  	$('#signin').remove();
+    var username = $('#username').val()
+    var password = $('#password').val()
+    console.log(username, password)
+    $.ajax({
+      type: 'POST',
+      data: {username: username, password: password},
+      url: 'http://chat.api.mks.io/signin'
+      }).success(function (data) {
+        localStorage.setItem("apiToken", data.apiToken);
+    $('#signin').remove();
     $('.container').append('<h3>You are logged in as '+username+'</h3>')
-  	})
+    })
   })
 
   $(document).on("click", ".signup", function() {
-  	var username = $('#username').val()
+    var username = $('#username').val()
     var password = $('#password').val()
-  	$.ajax({
-  		url: 'http://chat.api.mks.io/signup',
-  		type: 'POST',
-  		data: {username: username, password: password}	
-  		}).success(function(data) {
-  			console.log(data)
-  		})
+    $.ajax({
+      url: 'http://chat.api.mks.io/signup',
+      type: 'POST',
+      data: {username: username, password: password}  
+      }).success(function(data) {
+        console.log(data)
+      })
   })
 $(document).on("click", ".send-button", function(e){
   e.preventDefault()
-  	$.ajax({
-  		url: 'http://chat.api.mks.io/chats',
-  		type: 'POST',
-  		dataType: 'text',
-  		data: {
-  			apiToken: localStorage.apiToken,
-  			message: $('textarea[name=message]').val()
-  		}	
-  		}).done(function(data) {
+    $.ajax({
+      url: 'http://chat.api.mks.io/chats',
+      type: 'POST',
+      dataType: 'text',
+      data: {
+        apiToken: localStorage.apiToken,
+        message: $('textarea[name=message]').val()
+      }  
+      }).done(function(data) {
         fetchChatMessages();
-  			console.log(data);
-  	})
+        console.log(data);
+    })
 })
 </script>
 
 
 <script>
-	$.ajax({
-	  type: 'GET',
-	  url: 'http://chat.api.mks.io/chats'
-		}).success(function (chats) {
-		  console.log("Got chats:", chats)
-	})
+  $.ajax({
+    type: 'GET',
+    url: 'http://chat.api.mks.io/chats'
+    }).success(function (chats) {
+      console.log("Got chats:", chats)
+  })
 </script>
 
 <script>
@@ -118,12 +118,12 @@ $(document).on("click", ".send-button", function(e){
 
   function fetchChatMessages(){
     $.ajax({
-  		type: 'GET',
-  		url: 'http://chat.api.mks.io/chats'
-  	}).success(function (chats) {
+      type: 'GET',
+      url: 'http://chat.api.mks.io/chats'
+    }).success(function (chats) {
       $('.chats').empty();
-  	 chats.forEach(function(chat){
-  	 	var myNewHTML = template({
+     chats.forEach(function(chat){
+       var myNewHTML = template({
         user: chat['user'],
         message: chat['message'],
         time: new Date( chat['time'] *1000),
