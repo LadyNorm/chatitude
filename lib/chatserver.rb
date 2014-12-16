@@ -23,17 +23,17 @@ module Chat
           password VARCHAR
         ); 
         CREATE TABLE IF NOT EXISTS api_tokens(
-          id SERIAL PRIMARY KEY,
-          user_id INTEGER REFERENCES users(id),
-          api_token VARCHAR
+          id          SERIAL PRIMARY KEY,
+          user_id     INTEGER REFERENCES users(id),
+          api_token   VARCHAR
         );
         CREATE TABLE IF NOT EXISTS chats(
-          id SERIAL PRIMARY KEY,
-          username VARCHAR,
-          time TIMESTAMP,
-          message VARCHAR
-        );
-      SQL
+          id        SERIAL PRIMARY KEY,
+          username  VARCHAR,
+          time      TIMESTAMP,
+          message   VARCHAR
+         );
+       SQL
     end
 
     def self.drop_tables
@@ -78,6 +78,13 @@ module Chat
       db.exec <<-SQL
         INSERT INTO chats ()
       SQL
+    end
+
+    def self.all_chats()
+      sql = <<-SQL
+        SELECT * FROM chats
+      SQL
+      db.exec(sql)
     end
 
   end

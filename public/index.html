@@ -52,12 +52,12 @@
   $(document).on("click", "button.login", function(){
     var username = $('#username').val()
     var password = $('#password').val()
-    console.log(username, password)
     $.ajax({
       type: 'POST',
       data: {username: username, password: password},
       url: 'http://chat.api.mks.io/signin'
       }).success(function (data) {
+        console.log(data)
         localStorage.setItem("apiToken", data.apiToken);
     $('#signin').remove();
     $('.container').append('<h3>You are logged in as '+username+'</h3>')
@@ -118,7 +118,7 @@
   function fetchChatMessages(){
     $.ajax({
       type: 'GET',
-      url: 'http://chat.api.mks.io/chats'
+      url: '/chats'
     }).success(function (chats) {
       $('.chats').empty();
      chats.forEach(function(chat){
