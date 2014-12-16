@@ -7,19 +7,39 @@ module Chat
     def self.connect_db
       PG.connect(host: 'localhost', dbname: 'chatitude')
     end
-    
+
+    def self.clear_db(db)
+      db.exec <<-SQL
+        DELETE FROM users;
+        DELETE FROM api_tokens;
+      SQL
+    end
+
     def self.create_tables
       db.exec <<-SQL
         CREATE TABLE IF NOT EXISTS users(
           id       SERIAL PRIMARY KEY,
           username VARCHAR,
           password VARCHAR
-          ); 
-        CREATE TABLE IF NOT EXISTS api_tokens(
-        id        SERIAL PRIMARY KEY,
-        user_id   INTEGER REFERENCES users(id),
-        api_token   VARCHAR
         ); 
+        CREATE TABLE IF NOT EXISTS api_tokens(
+          id          SERIAL PRIMARY KEY,
+          user_id     INTEGER REFERENCES users(id),
+          api_token   VARCHAR
+        );
+        CREATE TABLE IF NOT EXISTS chats(
+          id        SERIAL PRIMARY KEY,
+          username  VARCHAR,
+          time      TIMESTAMP,
+          message   VARCHAR
+         );
+       SQL
+    end
+
+    def self.drop_tables
+      db.exec <<-SQL
+        DROP TABLE users CASCADE;
+        DROP TABLE api_tokens CASCADE;
       SQL
     end
 
@@ -34,7 +54,6 @@ module Chat
     def self.find_user_byname(username, db)
       db.exec("SELECT * FROM users where username = $1", [username]).to_a.first
     end
-
 
     def self.generate_apitoken
       SecureRandom.hex
