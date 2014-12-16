@@ -1,5 +1,6 @@
 require 'pg'
 require 'sinatra'
+require 'json'
 
 require_relative 'lib/chatitude.rb'
 
@@ -17,5 +18,5 @@ post '/signup' do
   api_token = Chat::DB.find_api_key(new_user['id'], db)
   # localStorage.setItem('apiKey', api_key)
   # redirect to '/'
-  return JSON.parse(api_token)
+  return { apiToken: api_token }
 end
