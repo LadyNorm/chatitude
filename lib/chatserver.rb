@@ -1,45 +1,43 @@
 require 'pg'
 require 'securerandom'
 
-module Chatserver
-  def self.create_db_connection(dbname)
-    PG.connect(host: 'localhost', dbname: dbname)
-  end
+module Chat
+  class DB
+    def self.create_tables
+      db.exec <<-SQL
+        CREATE TABLE IF NOT EXISTS users(
+          id       SERIAL PRIMARY KEY,
+          username VARCHAR,
+          password VARCHAR
+          ); 
+        CREATE TABLE IF NOT EXISTS api_keys(
+        id        SERIAL PRIMARY KEY,
+        user_id   INTEGER REFERENCES users(id),
+        api_key   VARCHAR
+        ); 
+      SQL
+    end
 
-  def self.clear_db(db)
-    db.exec <<-SQL
-      DELETE FROM users;
-    SQL
-  end
+    def self.connect_db
+      PG.connect(host: 'localhost', dbname: 'chatitude')
+    end
 
-  def self.create_tables(db)
-    db.exec <<-SQL
-      CREATE TABLE IF NOT EXISTS users(
-        id SERIAL PRIMARY KEY,
-        username VARCHAR,
-        password VARCHAR
-      );
-      CREATE TABLE IF NOT EXISTS tokens(
-        user_id INTEGER references users(id),
-        token VARCHAR
-      );
-    SQL
-  end
+    def self.new_user(name, pword, db)
+      sql = <<-SQL
+        INSERT INTO users (username, password)
+        values ($1, $2) returning *
+        SQL
+      db.exec(sql, [name, pword]).to_a.first    
+    end
 
-  def self.seed_db(db)
-    db.exec <<-SQL 
-      INSERT INTO users (username, password) values ('anonymous', 'anonymous')
-    SQL
-  end
+    def self.find_user_byname(username, db)
+      db.exec("SELECT * FROM users where username = $1", [username]).to_a.first
+    end
 
-  def self.new_user(user_data)
 
-  end
+    def self.generate_apikey
+      SecureRandom.hex
+    end
 
-  def self.drop_tables(db)
-    db.exec <<-SQL 
-      DROP TABLE users CASCADE;
-      DROP TABLE tokens CASCADE;
-    SQL
   end
 end
