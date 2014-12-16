@@ -49,7 +49,6 @@
 </script>
 
 <script>
-
   $(document).on("click", "button.login", function(){
   	var username = $('#username').val()
   	var password = $('#password').val()
@@ -64,7 +63,6 @@
     $('.container').append('<h3>You are logged in as '+username+'</h3>')
   	})
   })
-
   $(document).on("click", ".signup", function() {
   	var username = $('#username').val()
     var password = $('#password').val()
@@ -76,8 +74,8 @@
   			console.log(data)
   		})
   })
-$(document).on("click", ".send-button", function(e){
-  e.preventDefault()
+  $(document).on("click", ".send-button", function(e){
+    e.preventDefault()
   	$.ajax({
   		url: 'http://chat.api.mks.io/chats',
   		type: 'POST',
@@ -89,7 +87,7 @@ $(document).on("click", ".send-button", function(e){
   		}).done(function(data) {
         fetchChatMessages();
   			console.log(data);
-  	})
+  })
 })
 </script>
 
