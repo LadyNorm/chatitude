@@ -53,7 +53,9 @@ module Chat
     end
 
     def self.find_user_byname(username, db)
-      db.exec("SELECT * FROM users where username = $1", [username]).to_a.first
+      db.exec <<-SQL
+        SELECT * FROM users where username = $1, [username]).to_a.first
+      SQL
     end
 
     def self.generate_apitoken
@@ -61,11 +63,15 @@ module Chat
     end
 
     def self.find_user_byapi(api_token, db)
-      db.exec("SELECT username FROM users JOIN api_tokens ON users.id = api_tokens.user_id WHERE user_id = $1", [users.username]).to_a.first
+      db.exec <<-SQL
+        SELECT username FROM users JOIN api_tokens ON users.id = api_tokens.user_id WHERE user_id = $1, [users.username]).to_a.first
+      SQL
     end
 
     def self.find_api_key(user_id, db)
-      db.exec("SELECT api_token FROM api_tokens WHERE user_id = $1", [user_id]).entries.first
+      db.exec <<-SQL
+        SELECT api_token FROM api_tokens WHERE user_id = $1, [user_id]).entries.first
+      SQL
     end
 
     def self.new_message(message, api_token)
