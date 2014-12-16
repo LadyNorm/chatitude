@@ -8,16 +8,16 @@
 <body>
 
 <div class="container">
- <div id ="signin" class="bubble" class="users">
-    <input id="username" type="text" value="CuriousJorge">
-    <input id="password" type="text" value="password">
+ <div id ="signin" class="bubble users">
+    <input id="username" type="text" placeholder="username">
+    <input id="password" type="password" placeholder="password">
     <button class="login">Login!</button>
     <button class="signup">Sign Up!</button>
   </div>
 </div>
 <br>
 	<br>
-	<div class="bubble" class='send-message'>
+	<div class="bubble send-message">
 		<form>
 			<label>Message:</label>
 			<textarea name='message'></textarea>
@@ -41,7 +41,7 @@
 
 
 <script id="chat-template" type="text/x-handlebars-template">
-	<div class="bubble" id="{{ id }}" class="chat">
+	<div class="bubble chat" id="{{ id }}">
 		<h4>{{ user }}</h4>
 		<p>{{ message }}</p>
 		<small>{{ time }}</small>
