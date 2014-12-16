@@ -74,5 +74,12 @@ module Chat
       SQL
     end
 
+    def self.all_chats()
+      sql = <<-SQL
+        SELECT * FROM chats
+      SQL
+      db.exec(sql)
+    end
+
   end
 end

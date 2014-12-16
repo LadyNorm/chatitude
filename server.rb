@@ -4,7 +4,7 @@ require 'json'
 require 'sinatra/reloader'
 require 'securerandom'
 
-require_relative 'lib/chatitude.rb'
+require_relative 'lib/chatserver.rb'
 
 set :bind, '0.0.0.0'
 

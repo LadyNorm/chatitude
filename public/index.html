@@ -118,7 +118,7 @@
   function fetchChatMessages(){
     $.ajax({
       type: 'GET',
-      url: 'http://chat.api.mks.io/chats'
+      url: '/chats'
     }).success(function (chats) {
       $('.chats').empty();
      chats.forEach(function(chat){
