@@ -89,7 +89,7 @@ module Chat
       sql = <<-SQL
         SELECT * FROM chats
       SQL
-      db.exec(sql)
+      db.exec(sql).to_a
     end
 
     def self.save_api_key(api_token, user_id, db)

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<header('Access-Control-Allow-Origin'); ?>
 <head>
   <title>JQEEEEEEEERY</title>
   <script src="./js/jquery-2.1.1.js"></script>
@@ -50,8 +50,8 @@
 
 <script>
   $(document).on("click", "button.login", function(){
-    var username = $('#username').val()
-    var password = $('#password').val()
+    var username = $('#username').val();
+    var password = $('#password').val();
     $.ajax({
       type: 'POST',
       data: {username: username, password: password},
@@ -78,25 +78,25 @@
   $(document).on("click", ".send-button", function(e){
     e.preventDefault()
     $.ajax({
-      url: '/chats',
+      url: 'http://localhost:4567/chats',
       type: 'POST',
       dataType: 'text',
       data: {
         apiToken: localStorage.apiToken,
         message: $('textarea[name=message]').val()
-      } 
-      }).done(function(data) {
+      }
+    }).done(function(data) {
         fetchChatMessages();
         console.log(data);
+    })
   })
-})
 </script>
 
 
 <script>
   $.ajax({
     type: 'GET',
-    url: '/chats'
+    url: '0.0.0.0:4567/chats'
     }).success(function (chats) {
       console.log("Got chats:", chats)
   })
@@ -110,7 +110,7 @@
 
   window.setInterval(function(){
     fetchChatMessages();  //calling every 5 seconds
-  }, 1000);
+  }, 5000);
 
   var source = $("#chat-template").html();
   var template = Handlebars.compile(source);
@@ -123,9 +123,9 @@
       $('.chats').empty();
      chats.forEach(function(chat){
        var myNewHTML = template({
-        user: chat['user'],
+        user: chat['username'],
         message: chat['message'],
-        time: new Date( chat['time'] *1000),
+        time: chat['time'],
         id: chat['id']
       });
       // if ($('.chat#' + chat.id).length == 0){

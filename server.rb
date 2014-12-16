@@ -35,8 +35,10 @@ post '/signin' do
 end
 
 get '/chats' do
+  headers['Content-Type'] = 'application/json'
   db = Chat::DB.create_db_connection
-  p Chat::DB.all_chats(db)
+  puts Chat::DB.all_chats(db).to_json
+  Chat::DB.all_chats(db).to_json
 end
 
 post '/chats' do
