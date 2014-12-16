@@ -64,6 +64,10 @@ module Chat
       db.exec("SELECT username FROM users JOIN api_tokens ON users.id = api_tokens.user_id WHERE user_id = $1", [users.username]).to_a.first
     end
 
+    def self.find_api_key(user_id, db)
+      db.exec("SELECT api_token FROM api_tokens WHERE user_id = $1", [user_id]).entries.first
+    end
+
     def self.new_message(message, api_token)
       db.exec <<-SQL
         INSERT INTO chats ()
