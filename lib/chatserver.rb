@@ -18,15 +18,21 @@ module Chat
     def self.create_tables
       db.exec <<-SQL
         CREATE TABLE IF NOT EXISTS users(
-          id       SERIAL PRIMARY KEY,
+          id SERIAL PRIMARY KEY,
           username VARCHAR,
           password VARCHAR
-          ); 
-        CREATE TABLE IF NOT EXISTS api_tokens(
-        id        SERIAL PRIMARY KEY,
-        user_id   INTEGER REFERENCES users(id),
-        api_token   VARCHAR
         ); 
+        CREATE TABLE IF NOT EXISTS api_tokens(
+          id SERIAL PRIMARY KEY,
+          user_id INTEGER REFERENCES users(id),
+          api_token VARCHAR
+        );
+        CREATE TABLE IF NOT EXISTS chats(
+          id SERIAL PRIMARY KEY,
+          username VARCHAR,
+          time TIMESTAMP,
+          message VARCHAR
+        );
       SQL
     end
 
@@ -34,6 +40,7 @@ module Chat
       db.exec <<-SQL
         DROP TABLE users CASCADE;
         DROP TABLE api_tokens CASCADE;
+        DROP TABLE chats CASCADE;
       SQL
     end
 
@@ -51,6 +58,16 @@ module Chat
 
     def self.generate_apitoken
       SecureRandom.hex
+    end
+
+    def self.find_user_byapi(api_token, db)
+      db.exec("SELECT username FROM users JOIN api_tokens ON users.id = api_tokens.user_id WHERE user_id = $1", [users.username]).to_a.first
+    end
+
+    def self.new_message(message, api_token)
+      db.exec <<-SQL
+        INSERT INTO chats ()
+      SQL
     end
 
   end
