@@ -33,6 +33,7 @@ end
 
 get '/chats' do
   db = Chat::DB.create_db_connection
+  p Chat::DB.all_chats(db)
 end
 
 post '/chats' do

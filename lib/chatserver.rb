@@ -15,7 +15,7 @@ module Chat
       SQL
     end
 
-    def self.create_tables
+    def self.create_tables(db)
       db.exec <<-SQL
         CREATE TABLE IF NOT EXISTS users(
           id SERIAL PRIMARY KEY,
@@ -74,13 +74,13 @@ module Chat
       SQL
     end
 
-    def self.new_message(message, api_token)
+    def self.new_message(message, api_token, db)
       db.exec <<-SQL
         INSERT INTO chats ()
       SQL
     end
 
-    def self.all_chats()
+    def self.all_chats(db)
       sql = <<-SQL
         SELECT * FROM chats
       SQL

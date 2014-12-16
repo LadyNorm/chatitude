@@ -55,7 +55,7 @@
     $.ajax({
       type: 'POST',
       data: {username: username, password: password},
-      url: 'http://chat.api.mks.io/signin'
+      url: '/signin'
       }).success(function (data) {
         console.log(data)
         localStorage.setItem("apiToken", data.apiToken);
