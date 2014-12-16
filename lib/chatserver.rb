@@ -93,6 +93,13 @@ module Chat
 
     def self.save_api_key(api_token, user_id, db)
       sql = <<-SQL
+        INSERT INTO api_tokens (api_token, user_id) VALUES ($1, $2)
+      SQL
+      db.exec(sql, [api_token, user_id])
+    end
+
+    def self.update_api_key(api_token, user_id, db)
+      sql = <<-SQL
         UPDATE api_tokens SET api_token = $1 WHERE user_id = $2
       SQL
       db.exec(sql, [api_token, user_id])
