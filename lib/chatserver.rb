@@ -30,7 +30,7 @@ module Chat
         CREATE TABLE IF NOT EXISTS chats(
           id        SERIAL PRIMARY KEY,
           username  VARCHAR,
-          time      TIMESTAMP,
+          time      TIMESTAMP DEFAULT (now()),
           message   VARCHAR
          );
        SQL
@@ -65,23 +65,24 @@ module Chat
 
     def self.find_user_byapi(api_token, db)
       sql = <<-SQL
-        SELECT username FROM users JOIN api_tokens ON users.id = api_tokens.user_id WHERE user_id = $1
+        SELECT username FROM users JOIN api_tokens ON users.id = api_tokens.user_id WHERE api_tokens.api_token = $1
       SQL
-      db.exec(sql, [users.username]).to_a.first
+      db.exec(sql, [api_token]).to_a.first
     end
 
     def self.find_api_key(user_id, db)
       sql = <<-SQL
         SELECT api_token FROM api_tokens WHERE user_id = $1
       SQL
-      db.exec(sql, user_id).entries.first)
+      db.exec(sql, user_id).entries.first
     end
 
     def self.new_message(message, api_token, db)
+      user = find_user_byapi(api_token, db)
       sql = <<-SQL
-        INSERT INTO chats ()
+        INSERT INTO chats (username, message) VALUES ($1, $2)
       SQL
-      db.exec(sql)
+      db.exec(sql, [user['username'], message])
     end
 
     def self.all_chats(db)

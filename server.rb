@@ -17,7 +17,8 @@ post '/signup' do
   username = params[:username]
   password = params[:password]
   new_user = Chat::DB.new_user(username, password, db)
-  api_token = Chat::DB.find_api_key(new_user['id'], db)
+  api_token = Chat::DB.generate_apitoken
+  Chat::DB.save_api_key(api_token, new_user['id'], db)
   # localStorage.setItem('apiKey', api_key)
   # redirect to '/'
   return { apiToken: api_token }
@@ -27,7 +28,9 @@ post '/signin' do
   db = Chat::DB.create_db_connection
   username = params[:username]
   password = params[:password]
-  api_token = Chat::DB.find_api_key(users['id'], db)
+  user = Chat::DB.find_user_byname(username, db)
+  api_token = Chat::DB.generate_apitoken
+  Chat::DB.update_api_key(api_token, user['id'], db)
   return { apiToken: api_token }
 end
 

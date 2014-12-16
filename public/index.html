@@ -67,7 +67,7 @@
     var username = $('#username').val()
     var password = $('#password').val()
     $.ajax({
-      url: 'http://chat.api.mks.io/signup',
+      url: '/signup',
       type: 'POST',
       data: {username: username, password: password}  
       }).success(function(data) {
@@ -78,7 +78,7 @@
   $(document).on("click", ".send-button", function(e){
     e.preventDefault()
     $.ajax({
-      url: 'http://chat.api.mks.io/chats',
+      url: '/chats',
       type: 'POST',
       dataType: 'text',
       data: {
@@ -96,7 +96,7 @@
 <script>
   $.ajax({
     type: 'GET',
-    url: 'http://chat.api.mks.io/chats'
+    url: '/chats'
     }).success(function (chats) {
       console.log("Got chats:", chats)
   })
