@@ -26,7 +26,7 @@ post '/signup' do
   Chat::DB.save_api_key(api_token, new_user['id'], db)
   # localStorage.setItem('apiKey', api_key)
   # redirect to '/'
-  return { apiToken: api_token }
+  return {apiToken: api_token}.to_json
 end
 
 post '/signin' do
@@ -50,4 +50,6 @@ end
 post '/chats' do
   headers['Content-Type'] = 'application/json'
   db = Chat::DB.create_db_connection
+  Chat::DB.new_message(params['message'], params['apiToken'], db)
+  # {"apiToken"=>"487d8b4a8ce2c85bb0a8d447ef10bf0b", "message"=>"Hello"}
 end

@@ -70,15 +70,16 @@
       url: '/signup',
       type: 'POST',
       data: {username: username, password: password}  
-      }).success(function(data) {
+      }).success(function (data) {
         console.log(data)
+        localStorage.setItem("apiToken", data.apiToken);
       })
   })
 
   $(document).on("click", ".send-button", function(e){
     e.preventDefault()
     $.ajax({
-      url: 'http://localhost:4567/chats',
+      url: '/chats',
       type: 'POST',
       dataType: 'text',
       data: {
