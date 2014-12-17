@@ -56,7 +56,7 @@ module Chat
       sql = <<-SQL
         SELECT * FROM users where username = $1
       SQL
-      db.exec(sql, username).to_a.first
+      db.exec(sql, [username]).entries.first
     end
 
     def self.generate_apitoken

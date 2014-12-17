@@ -3,16 +3,21 @@ require 'sinatra'
 require 'json'
 require 'sinatra/reloader'
 require 'securerandom'
+# require 'sinatra/cross_origin'
 
 require_relative 'lib/chatserver.rb'
 
 set :bind, '0.0.0.0'
+# configure do
+#   enable :cross_origin
+# end
 
 get '/' do
   send_file 'public/index.html'
 end
 
 post '/signup' do
+  headers['Content-Type'] = 'application/json'
   db = Chat::DB.create_db_connection
   username = params[:username]
   password = params[:password]
@@ -25,13 +30,14 @@ post '/signup' do
 end
 
 post '/signin' do
+  headers['Content-Type'] = 'application/json'
   db = Chat::DB.create_db_connection
   username = params[:username]
   password = params[:password]
   user = Chat::DB.find_user_byname(username, db)
   api_token = Chat::DB.generate_apitoken
   Chat::DB.update_api_key(api_token, user['id'], db)
-  return { apiToken: api_token }
+  return {apiToken: api_token}.to_json
 end
 
 get '/chats' do
@@ -42,5 +48,6 @@ get '/chats' do
 end
 
 post '/chats' do
+  headers['Content-Type'] = 'application/json'
   db = Chat::DB.create_db_connection
 end
